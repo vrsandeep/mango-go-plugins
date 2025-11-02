@@ -1,0 +1,19 @@
+{
+  "name": "mango-go-plugin-template",
+  "version": "1.0.0",
+  "description": "Template for mango-go plugins",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "keywords": [
+    "mango-go",
+    "plugin",
+    "manga",
+    "comics"
+  ],
+  "license": "MIT"
+}

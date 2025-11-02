@@ -1,0 +1,22 @@
+{
+  "name": "webtoons-plugin",
+  "version": "1.0.0",
+  "description": "Webtoons downloader plugin for Mango-Go",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test index.test.js",
+    "test:watch": "node --test --watch index.test.js"
+  },
+  "keywords": [
+    "mango-go",
+    "plugin",
+    "webtoons"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

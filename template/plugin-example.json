@@ -1,0 +1,28 @@
+{
+  "id": "template",
+  "name": "Plugin Template",
+  "version": "1.0.0",
+  "description": "Template for creating new mango-go plugins",
+  "author": "Your Name",
+  "license": "MIT",
+  "api_version": "1.0",
+  "entry_point": "index.js",
+  "capabilities": {
+    "search": true,
+    "chapters": true,
+    "download": true
+  },
+  "config": {
+    "base_url": {
+      "type": "string",
+      "default": "https://api.example.com",
+      "description": "Base URL for the API"
+    },
+    "timeout": {
+      "type": "number",
+      "default": 30000,
+      "description": "Request timeout in milliseconds"
+    }
+  }
+}
+
