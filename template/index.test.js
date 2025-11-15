@@ -40,17 +40,6 @@ describe('Plugin Template Tests', () => {
     jest.clearAllMocks();
   });
 
-  describe('getInfo', () => {
-    test('returns correct plugin info', () => {
-      const info = plugin.getInfo();
-
-      expect(info).toHaveProperty('id');
-      expect(info).toHaveProperty('name');
-      expect(info).toHaveProperty('version');
-      expect(info.id).toBe('template');
-    });
-  });
-
   describe('search', () => {
     test('returns search results', async () => {
       const mockResults = {

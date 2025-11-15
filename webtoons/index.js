@@ -38,14 +38,6 @@ function constructProxyUrl(imageUrl, options = {}) {
   return PROXY_BASE_URL + "?" + params.join("&");
 }
 
-/**
- * Returns plugin metadata
- */
-exports.getInfo = () => ({
-  id: "webtoons",
-  name: "Webtoons",
-  version: "1.0.0",
-});
 
 /**
  * Searches for webtoons

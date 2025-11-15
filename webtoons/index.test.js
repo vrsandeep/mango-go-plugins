@@ -49,179 +49,187 @@ const createMockMango = (overrides = {}) => {
   return mockMango;
 };
 
-describe('Webtoons Plugin Tests', () => {
-  describe('getInfo', () => {
-    test('returns correct plugin info', () => {
-      const info = plugin.getInfo();
-
-      assert.ok(info, 'getInfo should return an object');
-      assert.strictEqual(info.id, 'webtoons', 'ID should be "webtoons"');
-      assert.strictEqual(info.name, 'Webtoons', 'Name should be "Webtoons"');
-      assert.ok(info.version, 'Should have a version');
-    });
-  });
-
-  describe('search', () => {
-    test('returns search results for valid query', async () => {
+describe("Webtoons Plugin Tests", () => {
+  describe("search", () => {
+    test("returns search results for valid query", async () => {
       const mockResponse = {
         status: 200,
-        statusText: 'OK',
+        statusText: "OK",
         data: {
           result: {
             total: 1,
             searchedList: [
               {
                 titleNo: 6795,
-                title: 'unOrdinary',
-                authorNameList: ['uru-chan'],
-                representGenre: 'Drama',
-                thumbnailImage2: '/thumbnail/icon_webtoon/6795/thumbnail_icon_webtoon_6795.jpg'
-              }
-            ]
-          }
-        }
+                title: "unOrdinary",
+                authorNameList: ["uru-chan"],
+                representGenre: "Drama",
+                thumbnailImage2:
+                  "/thumbnail/icon_webtoon/6795/thumbnail_icon_webtoon_6795.jpg",
+              },
+            ],
+          },
+        },
       };
 
       const mockMango = createMockMango({
         http: {
-          get: async () => mockResponse
-        }
+          get: async () => mockResponse,
+        },
       });
 
-      const results = await plugin.search('unordinary', mockMango);
+      const results = await plugin.search("unordinary", mockMango);
 
-      assert.ok(Array.isArray(results), 'Results should be an array');
-      assert.strictEqual(results.length, 1, 'Should return 1 result');
-      assert.strictEqual(results[0].title, 'unOrdinary', 'Title should match');
-      assert.strictEqual(results[0].identifier, '6795', 'Identifier should be titleNo as string');
-      assert.ok(results[0].cover_url, 'Should have cover_url');
+      assert.ok(Array.isArray(results), "Results should be an array");
+      assert.strictEqual(results.length, 1, "Should return 1 result");
+      assert.strictEqual(results[0].title, "unOrdinary", "Title should match");
+      assert.strictEqual(
+        results[0].identifier,
+        "6795",
+        "Identifier should be titleNo as string"
+      );
+      assert.ok(results[0].cover_url, "Should have cover_url");
       // Check that webtoons cover URLs are proxied
-      if (results[0].cover_url.includes('webtoon-phinf.pstatic.net')) {
-        assert.ok(results[0].cover_url.includes('/api/proxy/resource'), 'Webtoons cover should be proxied');
-        assert.ok(results[0].cover_url.includes('referer='), 'Proxy URL should include referer');
+      if (results[0].cover_url.includes("webtoon-phinf.pstatic.net")) {
+        assert.ok(
+          results[0].cover_url.includes("/api/proxy/resource"),
+          "Webtoons cover should be proxied"
+        );
+        assert.ok(
+          results[0].cover_url.includes("referer="),
+          "Proxy URL should include referer"
+        );
       }
     });
 
-    test('returns empty array when no results found', async () => {
+    test("returns empty array when no results found", async () => {
       const mockResponse = {
         status: 200,
-        statusText: 'OK',
+        statusText: "OK",
         data: {
           result: {
             total: 0,
-            searchedList: []
-          }
-        }
+            searchedList: [],
+          },
+        },
       };
 
       const mockMango = createMockMango({
         http: {
-          get: async () => mockResponse
-        }
+          get: async () => mockResponse,
+        },
       });
 
-      const results = await plugin.search('nonexistent', mockMango);
+      const results = await plugin.search("nonexistent", mockMango);
 
-      assert.ok(Array.isArray(results), 'Results should be an array');
-      assert.strictEqual(results.length, 0, 'Should return empty array');
+      assert.ok(Array.isArray(results), "Results should be an array");
+      assert.strictEqual(results.length, 0, "Should return empty array");
     });
 
-    test('handles API errors gracefully', async () => {
+    test("handles API errors gracefully", async () => {
       const mockMango = createMockMango({
         http: {
           get: async () => ({
             status: 500,
-            statusText: 'Internal Server Error'
-          })
-        }
+            statusText: "Internal Server Error",
+          }),
+        },
       });
 
       await assert.rejects(
-        async () => await plugin.search('test', mockMango),
+        async () => await plugin.search("test", mockMango),
         /Search failed/,
-        'Should throw error for non-200 status'
+        "Should throw error for non-200 status"
       );
     });
 
-    test('handles network errors', async () => {
+    test("handles network errors", async () => {
       const mockMango = createMockMango({
         http: {
           get: async () => {
-            throw new Error('Network error');
-          }
-        }
+            throw new Error("Network error");
+          },
+        },
       });
 
       await assert.rejects(
-        async () => await plugin.search('test', mockMango),
+        async () => await plugin.search("test", mockMango),
         /Failed to search/,
-        'Should throw error for network failures'
+        "Should throw error for network failures"
       );
     });
 
-    test('filters out items without titleNo', async () => {
+    test("filters out items without titleNo", async () => {
       const mockResponse = {
         status: 200,
-        statusText: 'OK',
+        statusText: "OK",
         data: {
           result: {
             total: 2,
             searchedList: [
               {
                 titleNo: 6795,
-                title: 'unOrdinary',
-                thumbnailImage2: '/thumb.jpg'
+                title: "unOrdinary",
+                thumbnailImage2: "/thumb.jpg",
               },
               {
                 titleNo: null,
-                title: 'Invalid Item'
-              }
-            ]
-          }
-        }
+                title: "Invalid Item",
+              },
+            ],
+          },
+        },
       };
 
       const mockMango = createMockMango({
         http: {
-          get: async () => mockResponse
-        }
+          get: async () => mockResponse,
+        },
       });
 
-      const results = await plugin.search('test', mockMango);
+      const results = await plugin.search("test", mockMango);
 
-      assert.strictEqual(results.length, 1, 'Should filter out invalid items');
-      assert.strictEqual(results[0].title, 'unOrdinary', 'Should keep valid items');
+      assert.strictEqual(results.length, 1, "Should filter out invalid items");
+      assert.strictEqual(
+        results[0].title,
+        "unOrdinary",
+        "Should keep valid items"
+      );
     });
 
-    test('handles missing thumbnail gracefully', async () => {
+    test("handles missing thumbnail gracefully", async () => {
       const mockResponse = {
         status: 200,
-        statusText: 'OK',
+        statusText: "OK",
         data: {
           result: {
             total: 1,
             searchedList: [
               {
                 titleNo: 6795,
-                title: 'unOrdinary',
+                title: "unOrdinary",
                 thumbnailImage2: null,
-                thumbnailMobile: null
-              }
-            ]
-          }
-        }
+                thumbnailMobile: null,
+              },
+            ],
+          },
+        },
       };
 
       const mockMango = createMockMango({
         http: {
-          get: async () => mockResponse
-        }
+          get: async () => mockResponse,
+        },
       });
 
-      const results = await plugin.search('test', mockMango);
+      const results = await plugin.search("test", mockMango);
 
-      assert.strictEqual(results.length, 1, 'Should return result');
-      assert.strictEqual(results[0].cover_url, '', 'Should have empty cover_url when no thumbnail');
+      assert.strictEqual(results.length, 1, "Should return result");
+      assert.strictEqual(
+        results[0].cover_url,
+        "",
+        "Should have empty cover_url when no thumbnail"
+      );
     });
   });
 

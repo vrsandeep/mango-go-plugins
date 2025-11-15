@@ -66,16 +66,17 @@ See the [webtoons](./webtoons/) plugin for a complete example with all files.
 
 ### Required Exports
 
-#### `getInfo()`
-Returns plugin metadata.
+#### Plugin Metadata
 
-```javascript
-exports.getInfo = () => ({
-  id: "plugin-id",      // Must match plugin.json id
-  name: "Plugin Name",
-  version: "1.0.0"
-});
-```
+Plugin metadata is provided by `plugin.json` and `repository.json`.
+
+**plugin.json** should contain:
+- `id` (required)
+- `api_version` (required)
+- `entry_point` (optional, defaults to "index.js")
+- `config` (optional, plugin-specific configuration)
+
+All other metadata (name, version, description, author, license, plugin_type, capabilities) should be set in `repository.json`.
 
 #### `search(query, mango)`
 Search for series/manga.
@@ -251,12 +252,6 @@ const createMockMango = (overrides = {}) => ({
 });
 
 describe('My Plugin', () => {
-  test('getInfo returns correct info', () => {
-    const info = plugin.getInfo();
-    assert.strictEqual(info.id, 'my-plugin');
-    assert.ok(info.name);
-    assert.ok(info.version);
-  });
 
   test('search works correctly', async () => {
     const mockMango = createMockMango({

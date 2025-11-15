@@ -22,7 +22,7 @@ This is a template for creating new mango-go plugins. Copy this directory and mo
 ## Implementation Checklist
 
 - [ ] Update `plugin.json` with your plugin details
-- [ ] Implement `getInfo()`
+- [ ] Load plugin metadata into `repository.json`
 - [ ] Implement `search(query, mango)`
 - [ ] Implement `getChapters(seriesId, mango)`
 - [ ] Implement `getPageURLs(chapterId, mango)`

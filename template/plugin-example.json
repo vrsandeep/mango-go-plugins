@@ -1,17 +1,7 @@
 {
   "id": "template",
-  "name": "Plugin Template",
-  "version": "1.0.0",
-  "description": "Template for creating new mango-go plugins",
-  "author": "Your Name",
-  "license": "MIT",
   "api_version": "1.0",
   "entry_point": "index.js",
-  "capabilities": {
-    "search": true,
-    "chapters": true,
-    "download": true
-  },
   "config": {
     "base_url": {
       "type": "string",
@@ -25,4 +15,3 @@
     }
   }
 }
-

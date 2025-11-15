@@ -1,18 +1,7 @@
 {
   "id": "webtoons",
-  "name": "Webtoons",
-  "version": "1.0.0",
-  "description": "Download webtoons from webtoons.com",
-  "author": "Mango-Go Community",
-  "license": "MIT",
   "api_version": "1.0",
-  "plugin_type": "downloader",
   "entry_point": "index.js",
-  "capabilities": {
-    "search": true,
-    "chapters": true,
-    "download": true
-  },
   "config": {
     "timeout": {
       "type": "number",
@@ -21,4 +10,3 @@
     }
   }
 }
-

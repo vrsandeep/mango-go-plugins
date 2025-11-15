@@ -4,19 +4,10 @@
  * This is a template for creating new plugins. Copy this file and plugin.json
  * to create your own plugin.
  *
- * Required: All four exports (getInfo, search, getChapters, getPageURLs)
+ * Required: All three exports (search, getChapters, getPageURLs)
  * Pattern: Use dependency injection - mango API is passed as parameter
  */
 
-/**
- * Returns plugin metadata.
- * This information is used by mango-go to identify and display the plugin.
- */
-exports.getInfo = () => ({
-  id: "template",
-  name: "Plugin Template",
-  version: "1.0.0"
-});
 
 /**
  * Searches for series/manga.
