@@ -14,15 +14,10 @@
     "download": true
   },
   "config": {
-    "base_url": {
-      "type": "string",
-      "default": "https://www.webtoons.com",
-      "description": "Webtoons base URL"
-    },
-    "mobile_url": {
-      "type": "string",
-      "default": "https://m.webtoons.com",
-      "description": "Webtoons mobile URL"
+    "timeout": {
+      "type": "number",
+      "default": 30000,
+      "description": "Request timeout in milliseconds"
     }
   }
 }

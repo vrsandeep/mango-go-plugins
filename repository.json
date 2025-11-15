@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "repository": {
+    "name": "Mango-Go Plugins",
+    "url": "https://github.com/vrsandeep/mango-go-plugins",
+    "description": "Official plugin repository for mango-go"
+  },
+  "plugins": [
+    {
+      "id": "webtoons",
+      "name": "Webtoons",
+      "version": "1.0.0",
+      "description": "Download webtoons from webtoons.com",
+      "author": "Mango-Go Community",
+      "license": "MIT",
+      "api_version": "1.0",
+      "plugin_type": "downloader",
+      "download_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/webtoons/",
+      "manifest_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/webtoons/plugin.json",
+      "entry_point": "index.js",
+      "capabilities": {
+        "search": true,
+        "chapters": true,
+        "download": true
+      },
+      "updated_at": "2025-01-15T10:00:00Z"
+    }
+  ]
+}
+
