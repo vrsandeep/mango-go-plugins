@@ -1,0 +1,118 @@
+name: Test Plugins
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  discover-plugins:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.set-plugins.outputs.plugins }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Discover plugins
+        id: set-plugins
+        run: |
+          # Find all directories with plugin.json (excluding .github)
+          plugins=$(find . -maxdepth 2 -name "plugin.json" -not -path "./.github/*" -exec dirname {} \; | sed 's|^\./||' | sort)
+
+          if [ -z "$plugins" ]; then
+            echo "No plugins found"
+            echo "plugins=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Convert to JSON array format for matrix
+          plugin_array="["
+          first=true
+          for plugin in $plugins; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              plugin_array="$plugin_array,"
+            fi
+            plugin_array="$plugin_array\"$plugin\""
+          done
+          plugin_array="$plugin_array]"
+
+          echo "plugins=$plugin_array" >> $GITHUB_OUTPUT
+          echo "Found plugins: $plugin_array"
+
+  test-plugins:
+    needs: discover-plugins
+    if: needs.discover-plugins.outputs.plugins != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJson(needs.discover-plugins.outputs.plugins) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ${{ matrix.plugin }}/package.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.plugin }}
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+          fi
+
+      - name: Check for test files
+        id: check-tests
+        working-directory: ${{ matrix.plugin }}
+        run: |
+          if [ -f index.test.js ]; then
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+            echo "Found index.test.js"
+          elif find . -maxdepth 1 -name "*.test.js" -type f | grep -q .; then
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+            echo "Found test files"
+          else
+            echo "has_tests=false" >> $GITHUB_OUTPUT
+            echo "No test files found"
+          fi
+
+      - name: Run tests
+        if: steps.check-tests.outputs.has_tests == 'true'
+        working-directory: ${{ matrix.plugin }}
+        run: |
+          echo "Testing plugin: ${{ matrix.plugin }}"
+
+          # Check if package.json has test script
+          if [ -f package.json ] && grep -q '"test"' package.json; then
+            echo "Running tests via npm test"
+            npm test
+          elif [ -f index.test.js ]; then
+            echo "Running tests via node --test"
+            node --test index.test.js
+          else
+            echo "Error: Test files found but no test runner configured"
+            exit 1
+          fi
+
+      - name: Skip tests (no test files)
+        if: steps.check-tests.outputs.has_tests == 'false'
+        run: |
+          echo "⚠️  Plugin ${{ matrix.plugin }} has no test files - skipping tests"
+          echo "Consider adding tests to ensure plugin quality"
+
+      - name: Test summary
+        if: always()
+        run: |
+          echo "Plugin ${{ matrix.plugin }} test completed with status: ${{ job.status }}"
+
