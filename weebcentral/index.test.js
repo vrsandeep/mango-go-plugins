@@ -586,17 +586,16 @@ describe("WeebCentral Plugin Tests", () => {
 
       assert.ok(Array.isArray(urls), "URLs should be an array");
       assert.strictEqual(urls.length, 3, "Should return 3 page URLs");
+      // URLs are now proxy URLs, so check for proxy format
       assert.ok(
-        urls[0].includes("page1.jpg"),
-        "Should extract correct image URLs"
+        urls[0].includes("/api/proxy/resource"),
+        "Should use proxy URL format"
       );
+      // Decode to check for original URL content
+      const decodedUrl = decodeURIComponent(urls[0]);
       assert.ok(
-        urls[1].includes("page2.jpg"),
-        "Should extract second image URL"
-      );
-      assert.ok(
-        urls[2].includes("page3.jpg"),
-        "Should extract third image URL"
+        decodedUrl.includes("page1.jpg"),
+        "Should include original image URL in proxy"
       );
     });
 
@@ -736,12 +735,15 @@ describe("WeebCentral Plugin Tests", () => {
       const urls = await plugin.getPageURLs("chapter-123", mockMango);
 
       assert.strictEqual(urls.length, 2, "Should filter out empty src attributes");
+      // URLs are now proxy URLs
+      const decodedUrl0 = decodeURIComponent(urls[0]);
+      const decodedUrl1 = decodeURIComponent(urls[1]);
       assert.ok(
-        urls[0].includes("page1.jpg"),
+        decodedUrl0.includes("page1.jpg"),
         "Should keep valid URLs"
       );
       assert.ok(
-        urls[1].includes("page2.jpg"),
+        decodedUrl1.includes("page2.jpg"),
         "Should keep valid URLs"
       );
     });

@@ -4,6 +4,35 @@
  */
 
 const BASE_URL = "https://weebcentral.com";
+const PROXY_BASE_URL = "http://localhost:8080/api/proxy/resource";
+
+/**
+ * Constructs a proxy URL for an image resource
+ * @param {string} imageUrl - The original image URL to proxy
+ * @param {object} options - Optional headers and configuration
+ * @param {string} options.referer - Referer header value
+ * @param {string} options.userAgent - User-Agent header value
+ * @param {string} options.origin - Origin header value
+ * @returns {string} The proxy URL
+ */
+function constructProxyUrl(imageUrl, options = {}) {
+  const params = [];
+  params.push("url=" + encodeURIComponent(imageUrl));
+
+  if (options.referer) {
+    params.push("referer=" + encodeURIComponent(options.referer));
+  }
+
+  if (options.userAgent) {
+    params.push("user-agent=" + encodeURIComponent(options.userAgent));
+  }
+
+  if (options.origin) {
+    params.push("origin=" + encodeURIComponent(options.origin));
+  }
+
+  return PROXY_BASE_URL + "?" + params.join("&");
+}
 
 /**
  * Searches for manga on WeebCentral
@@ -299,7 +328,29 @@ exports.getPageURLs = async (chapterIdentifier, mango) => {
       const img = images[i];
       const src = img.getAttribute("src");
       if (src && src.trim() !== "") {
-        pages.push(src);
+        // Extract origin from image URL for proper referer
+        let imageOrigin = "";
+        let imageReferer = `${BASE_URL}/chapters/${chapterIdentifier}`;
+        try {
+          const urlObj = new URL(src);
+          imageOrigin = urlObj.origin;
+          // Some CDNs require referer to match their domain
+          // Try using the image domain as referer first
+          imageReferer = `${imageOrigin}/`;
+        } catch (e) {
+          // If URL parsing fails, use BASE_URL as fallback
+          imageOrigin = BASE_URL;
+        }
+
+        // WeebCentral images require proper headers when fetching
+        // Use proxy URLs to include the necessary headers
+        const proxyUrl = constructProxyUrl(src, {
+          referer: imageReferer,
+          userAgent:
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          origin: imageOrigin,
+        });
+        pages.push(proxyUrl);
       }
     }
 
@@ -307,7 +358,7 @@ exports.getPageURLs = async (chapterIdentifier, mango) => {
       throw new Error("No pages found");
     }
 
-    mango.log.info(`Found ${pages.length} pages`);
+    mango.log.info(`Found ${pages.length} pages (using proxy URLs)`);
     return pages;
   } catch (error) {
     mango.log.error(`GetPageURLs failed: ${error.message}`);
