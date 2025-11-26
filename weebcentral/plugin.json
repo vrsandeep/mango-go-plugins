@@ -1,0 +1,13 @@
+{
+  "id": "weebcentral",
+  "api_version": "1.0",
+  "entry_point": "index.js",
+  "config": {
+    "timeout": {
+      "type": "number",
+      "default": 30000,
+      "description": "Request timeout in milliseconds"
+    }
+  }
+}
+

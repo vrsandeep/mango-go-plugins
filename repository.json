@@ -24,6 +24,44 @@
         "download": true
       },
       "updated_at": "2025-01-15T10:00:00Z"
+    },
+    {
+      "id": "mangadex",
+      "name": "MangaDex",
+      "version": "1.0.0",
+      "description": "Download manga from MangaDex (https://mangadex.org)",
+      "author": "Mango-Go Community",
+      "license": "MIT",
+      "api_version": "1.0",
+      "plugin_type": "downloader",
+      "download_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/mangadex/",
+      "manifest_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/mangadex/plugin.json",
+      "entry_point": "index.js",
+      "capabilities": {
+        "search": true,
+        "chapters": true,
+        "download": true
+      },
+      "updated_at": "2025-01-15T10:00:00Z"
+    },
+    {
+      "id": "weebcentral",
+      "name": "WeebCentral",
+      "version": "1.0.0",
+      "description": "Download manga from WeebCentral (https://weebcentral.com)",
+      "author": "Mango-Go Community",
+      "license": "MIT",
+      "api_version": "1.0",
+      "plugin_type": "downloader",
+      "download_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/weebcentral/",
+      "manifest_url": "https://raw.githubusercontent.com/vrsandeep/mango-go-plugins/master/weebcentral/plugin.json",
+      "entry_point": "index.js",
+      "capabilities": {
+        "search": true,
+        "chapters": true,
+        "download": true
+      },
+      "updated_at": "2025-01-15T10:00:00Z"
     }
   ]
 }
