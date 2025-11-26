@@ -11,15 +11,9 @@ Plugins extend mango-go with new download sources. Each plugin is a JavaScript m
 ### Installing a Plugin
 
 1. Clone or download this repository
-2. Copy the plugin directory to your mango-go plugins path configured in [config.yml](https://github.com/vrsandeep/mango-go/blob/master/config.yml)
-3. Restart mango-go (plugins are loaded at startup)
+2. Go to admin page of mango-go and install
+3. Click on reload all plugins in the same page
 
-
-## Available Plugins
-
-See individual plugin directories for installation instructions and documentation.
-
-- **[Webtoons](./webtoons/)** - Download webtoons from [webtoons.com](https://www.webtoons.com)
 
 ### Contributing a Plugin
 
@@ -34,5 +28,5 @@ Submit your plugin via pull request! See [CONTRIBUTING.md](CONTRIBUTING.md) for 
 
 ## License
 
-Plugins in this repository are licensed under their respective licenses (see each plugin's directory).
+Plugins in this repository are licensed as documented in [repository.json](./repository.json).
 
