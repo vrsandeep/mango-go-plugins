@@ -9,7 +9,7 @@
     {
       "id": "webtoons",
       "name": "Webtoons",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Download webtoons from webtoons.com",
       "author": "Mango-Go Community",
       "license": "MIT",
