@@ -23,7 +23,7 @@
         "chapters": true,
         "download": true
       },
-      "updated_at": "2025-01-15T10:00:00Z"
+      "updated_at": "2025-11-28T10:00:00Z"
     },
     {
       "id": "mangadex",
@@ -42,7 +42,7 @@
         "chapters": true,
         "download": true
       },
-      "updated_at": "2025-01-15T10:00:00Z"
+      "updated_at": "2025-11-28T10:00:00Z"
     },
     {
       "id": "weebcentral",
@@ -61,7 +61,7 @@
         "chapters": true,
         "download": true
       },
-      "updated_at": "2025-01-15T10:00:00Z"
+      "updated_at": "2025-11-28T10:00:00Z"
     }
   ]
 }
