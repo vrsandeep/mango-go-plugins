@@ -28,7 +28,7 @@
     {
       "id": "mangadex",
       "name": "MangaDex",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Download manga from MangaDex (https://mangadex.org)",
       "author": "Mango-Go Community",
       "license": "MIT",

@@ -124,13 +124,9 @@ exports.search = async (query, mango) => {
         // Construct cover URL
         let coverURL = "";
         if (coverFileName && mangaData.id) {
-          const originalCoverURL = `${COVER_ART_BASE_URL}/covers/${mangaData.id}/${coverFileName}.256.jpg`;
-          // Use proxy URL to ensure proper headers (Referer) are sent
-          coverURL = constructProxyUrl(originalCoverURL, {
-            referer: `${MANGA_DEX_BASE_URL}/`,
-          });
-          // Remove the protocol and host for relative URL (used in frontend)
-          coverURL = coverURL.replace("http://localhost:8080", "");
+          // MangaDex cover art URLs are publicly accessible and don't require proxy
+          // Using direct URLs avoids rate limiting issues
+          coverURL = `${COVER_ART_BASE_URL}/covers/${mangaData.id}/${coverFileName}.256.jpg`;
         }
 
         return {
