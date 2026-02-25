@@ -295,7 +295,7 @@ exports.getPageURLs = async (chapterIdentifier, mango) => {
   mango.log.info(`Fetching page URLs for chapter: ${chapterIdentifier}`);
 
   try {
-    const pageURL = `${BASE_URL}/chapters/${chapterIdentifier}/images?is_prev=False&reading_style=long_strip`;
+    const pageURL = `${BASE_URL}/chapters/${chapterIdentifier}/images?is_prev=False&current_page=1&reading_style=long_strip`;
 
     const headers = {
       "HX-Request": "true",
@@ -318,10 +318,12 @@ exports.getPageURLs = async (chapterIdentifier, mango) => {
     const doc = mango.utils.parseHTML(html);
 
     const pages = [];
-    let images = doc.querySelectorAll("section.flex-1 img");
+    const imageSelectors = ["section.flex-1 img", "img"];
 
-    if (images.length === 0) {
-      images = doc.querySelectorAll("img");
+    let images = [];
+    for (let s = 0; s < imageSelectors.length; s++) {
+      images = doc.querySelectorAll(imageSelectors[s]);
+      if (images && images.length > 0) break;
     }
 
     for (let i = 0; i < images.length; i++) {

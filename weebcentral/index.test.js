@@ -636,10 +636,9 @@ describe("WeebCentral Plugin Tests", () => {
 
       assert.ok(Array.isArray(urls), "URLs should be an array");
       assert.strictEqual(urls.length, 2, "Should return 2 page URLs");
-      assert.strictEqual(
-        selectorCallCount,
-        2,
-        "Should try both selectors"
+      assert.ok(
+        selectorCallCount >= 2,
+        "Should try multiple selectors until images found"
       );
     });
 

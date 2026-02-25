@@ -47,7 +47,7 @@
     {
       "id": "weebcentral",
       "name": "WeebCentral",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Download manga from WeebCentral (https://weebcentral.com)",
       "author": "Mango-Go Community",
       "license": "MIT",
